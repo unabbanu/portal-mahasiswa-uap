@@ -1,0 +1,86 @@
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install apache2 -y
+
+sudo apt install mysql-server -y
+
+(mysql)
+sudo apt install php libapache2-mod-php php-mysql php-mbstring php-zip php-gd php-json php-curl -y
+
+sudo apt install phpmyadmin -y
+
+sudo phpenmod mbstring
+sudo systemctl restart apache2
+
+
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+bind-address        = 192.168.1.7 (ip pc mysql)
+mysqlx-bind-address = 0.0.0.0
+
+sudo mysql -u root -p
+CREATE USER 'admin'@'%' IDENTIFIED BY 'Qwerty1234';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+
+(caddy)
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://cloudsmith.io' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://cloudsmith.io' | sudo tee /etc/apt/sources.list.p/caddy-stable.list
+
+sudo apt update
+sudo apt install caddy -y
+
+sudo apt install php-fpm -y
+
+php -v (cek php-fpm versi berapa)
+
+sudo nano /etc/caddy/Caddyfile
+:80 {
+    # 1. Tentukan folder tempat Anda menyimpan file website/PHP
+    root * /var/www/html
+
+    # 2. Tambahkan script PHP-FPM (Sesuaikan versi phpX.X dengan versi Anda)
+    php_fastcgi unix//run/php/php8.5-fpm.sock
+
+    # 3. Aktifkan fitur untuk membaca file statis (HTML, CSS, JS, Gambar)
+    file_server
+
+    # 4. Aktifkan kompresi file agar website lebih cepat dimuat (opsional)
+    encode gzip
+}
+
+(mengatur limit upload)
+sudo nano /etc/php/8.5/fpm/php.ini
+
+upload_max_filesize = 550M
+post_max_size = 560M
+memory_limit = 512M
+max_execution_time = 600
+
+(intall zip)
+sudo apt update
+sudo apt install php8.5-zip (sesuaikan dengan versi php yg terinstal)
+sudo systemctl restart php8.5-fpm
+
+(instal ffmpeg)
+sudo apt install ffmpeg -y
+ffmpeg version 8.0.1-3ubuntu2
+
+(permision folder www-data)
+sudo chown -R www-data:www-data /usr/share/caddy
+sudo chown -R banu:banu /usr/share/caddy
+sudo chmod -R 755 /usr/share/caddy
+
+permision grup lain
+sudo chmod 777 /usr/share/caddy
+
+10.122.248.194
+ssh banu@10.122.248.194
+
+banu
+Banu2026
+
+https://fti.as-home.site/
+
+
